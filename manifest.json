@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+
+  "name": "Ebay sort by sold number",
+  "version": "0.1.0",
+  "description": "Ebay sort by sold number",
+
+  "content_scripts": [{
+    "js": ["content.js"],
+    "matches": ["https://www.ebay.com/*"]
+  }]
+
+}
