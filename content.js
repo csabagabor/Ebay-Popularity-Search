@@ -11,7 +11,7 @@ function replaceListItems(){
 	var list;
 	for(var i = 0; i < lists.length; i++) {
 		
-		if(lists[i].className === "srp-results srp-grid clearfix"){
+		if(lists[i].className === "gv-ic full-width left"){
 			list = lists[i];
 			//alert("megvan");
 		}
@@ -33,14 +33,14 @@ function replaceListItems(){
 	for(var i = 0; i < listItems.length; i++) {
 		
 		if(listItems[i].innerHTML.indexOf(searchValue) > -1){
-			var children = listItems[i].children;
-			for(var i=0;i<children.length;i++){
-				//exclude descendants
-				if(children[i].innerText.indexOf(searchValue)>-1){
-					
-					//alert(children[i].innerText);
+			
+			listItems[i].childNodes.forEach(function(value){
+			  if(value.nodeType === Node.TEXT_NODE) { 
+				if(value.nodeValue.trim().indexOf(searchValue) > -1){
+				  console.log("Current textNode value is : ", value.nodeValue.trim())
 				}
-			}
+			  }
+			});	
 			//alert(inputs[i].id + " "+inputs[0].id);
 			list.insertBefore(listItems[i], listItems[0]);
 		}
