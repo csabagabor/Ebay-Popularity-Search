@@ -1,40 +1,46 @@
 
-
-
 setTimeout(function(){
     replaceListItems();
 }, 100);
 
 
-function replaceListItems(){
-	var lists = document.getElementsByTagName('ul');
+function findUlItem(){
+  var lists = document.getElementsByTagName('ul');
 	var list;
 	for(var i = 0; i < lists.length; i++) {
-
 		if(lists[i].className === "gv-ic full-width left"){
 			list = lists[i];
-			//alert("megvan");
-		}
-
-	}
-
-	var searchValue = "Sold";
-	var listItems = [];
-
-
-
-	for(var i = 0; i < list.childNodes.length; i++) {
-		console.log(list.childNodes[i].nodeName);
-		if(list.childNodes[i].nodeName == "LI"){
-			//alert(inputs[i].id + " "+inputs[0].id);
-			listItems.push(list.childNodes[i]);
 		}
 	}
+  return list;
+}
 
+
+function searchChildrenListItems(ulItem){
+  var listItems = [];
+  for(var i = 0; i < ulItem.childNodes.length; i++) {
+		console.log(ulItem.childNodes[i].nodeName);
+		if(ulItem.childNodes[i].nodeName == "LI"){
+			listItems.push(ulItem.childNodes[i]);
+		}
+	}
+  return listItems;
+}
+
+
+function createDummyListItem(ulItem,listItems){
   var hiddenLi = document.createElement("LI");
   hiddenLi.style.display = "none";
-  list.insertBefore(hiddenLi, listItems[0]);
+  ulItem.insertBefore(hiddenLi, listItems[0]);
+  return hiddenLi;
+}
 
+function replaceListItems(){
+
+  var list = findUlItem();
+	var searchValue = "Sold";
+	var listItems = searchChildrenListItems(list);
+  var hiddenLi = createDummyListItem(list, listItems);
 
   var listSortedItems = [];
 	for(var i = 0; i < listItems.length; i++) {
