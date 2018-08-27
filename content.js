@@ -10,11 +10,11 @@ function replaceListItems() {
   var listItems = searchChildrenListItems(list);
   var hiddenLi = createDummyListItem(list, listItems);
   var listSortedItems = getListWithSoldNumbers(listItems);
+  sortListItems(listSortedItems);
+  insertSoldItemsInFront(list, listSortedItems, hiddenLi);
+}
 
-  listSortedItems.sort(function(a, b) { //descending order
-    return b.soldNumber - a.soldNumber;
-  })
-
+function insertSoldItemsInFront(list, listSortedItems, hiddenLi){
   for (var j = 0; j < listSortedItems.length; j++) {
     // if listItems[0] is inserted before itself, problems occur
     //that's why we are using a dummy element(hiddenLi) for first element
@@ -22,6 +22,11 @@ function replaceListItems() {
   }
 }
 
+function sortListItems(listSortedItems){
+  listSortedItems.sort(function(a, b) { //descending order
+    return b.soldNumber - a.soldNumber;
+  })
+}
 
 function getSoldNumberFromText(node){
   var text = node.nodeValue.trim();
