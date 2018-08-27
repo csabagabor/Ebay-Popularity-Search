@@ -71,11 +71,12 @@ function getListWithSoldNumbers(listItems) {
 
 
 function findUlItem() {
-  var lists = document.getElementsByTagName('ul');
-  var list;
-  for (var i = 0; i < lists.length; i++) {
-    if (lists[i].className === "gv-ic full-width left") {
-      list = lists[i];
+  var resultDiv = document.getElementById('Results');
+  var descendants = getElementDescendants(resultDiv);
+  for (var j = 0; j < descendants.length; j++) {
+    if(descendants[j].tagName == "UL"){
+      list = descendants[j];
+      break;
     }
   }
   return list;
@@ -108,6 +109,16 @@ function getDescendants(node, accum) {
   for (i = 0; i < node.childNodes.length; i++) {
     accum.push(node.childNodes[i])
     getDescendants(node.childNodes[i], accum);
+  }
+  return accum;
+}
+
+function getElementDescendants(node, accum) {
+  var i;
+  accum = accum || [];
+  for (i = 0; i < node.children.length; i++) {
+    accum.push(node.children[i])
+    getElementDescendants(node.children[i], accum);
   }
   return accum;
 }
