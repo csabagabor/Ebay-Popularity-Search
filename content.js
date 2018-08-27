@@ -4,8 +4,10 @@ setTimeout(function() {
 
 var searchValue = "Sold";
 
-function replaceListItems() {
 
+
+
+function replaceListItems() {
   var list = findUlItem();
   var listItems = searchChildrenListItems(list);
   var hiddenLi = createDummyListItem(list, listItems);
@@ -14,7 +16,8 @@ function replaceListItems() {
   insertSoldItemsInFront(list, listSortedItems, hiddenLi);
 }
 
-function insertSoldItemsInFront(list, listSortedItems, hiddenLi){
+
+function insertSoldItemsInFront(list, listSortedItems, hiddenLi) {
   for (var j = 0; j < listSortedItems.length; j++) {
     // if listItems[0] is inserted before itself, problems occur
     //that's why we are using a dummy element(hiddenLi) for first element
@@ -22,13 +25,15 @@ function insertSoldItemsInFront(list, listSortedItems, hiddenLi){
   }
 }
 
-function sortListItems(listSortedItems){
+
+function sortListItems(listSortedItems) {
   listSortedItems.sort(function(a, b) { //descending order
     return b.soldNumber - a.soldNumber;
   })
 }
 
-function getSoldNumberFromText(node){
+
+function getSoldNumberFromText(node) {
   var text = node.nodeValue.trim();
   var soldNr;
   if (text.indexOf("+") > -1) { //eg "37+ Sold"
@@ -37,13 +42,15 @@ function getSoldNumberFromText(node){
   return soldNr;
 }
 
-function addItemToSortedItems(listSortedItems, currItem, soldNr ){
+
+function addItemToSortedItems(listSortedItems, currItem, soldNr) {
   var listItemWithSoldNumber = {
     listItem: currItem,
     soldNumber: soldNr
   }
   listSortedItems.push(listItemWithSoldNumber);
 }
+
 
 function getListWithSoldNumbers(listItems) {
   var listSortedItems = [];
@@ -93,6 +100,7 @@ function createDummyListItem(ulItem, listItems) {
   ulItem.insertBefore(hiddenLi, listItems[0]);
   return hiddenLi;
 }
+
 
 function getDescendants(node, accum) {
   var i;
