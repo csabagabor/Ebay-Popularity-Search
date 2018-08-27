@@ -9,13 +9,20 @@ var searchValue = "Sold";
 
 function replaceListItems() {
   var list = findUlItem();
-  var listItems = searchChildrenListItems(list);
-  var hiddenLi = createDummyListItem(list, listItems);
-  var listSortedItems = getListWithSoldNumbers(listItems);
-  sortListItems(listSortedItems);
-  insertSoldItemsInFront(list, listSortedItems, hiddenLi);
+  if (list != -1) {
+    var listItems = searchChildrenListItems(list);
+    var hiddenLi = createDummyListItem(list, listItems);
+    var listSortedItems = getListWithSoldNumbers(listItems);
+    sortListItems(listSortedItems);
+    insertSoldItemsInFront(list, listSortedItems, hiddenLi);
+  }
 }
 
+function ulItemContainsSoldItems(list) {
+  if (list.innerHTML.indexOf(searchValue) > -1)
+    return true;
+  return false;
+}
 
 function insertSoldItemsInFront(list, listSortedItems, hiddenLi) {
   for (var j = 0; j < listSortedItems.length; j++) {
@@ -71,32 +78,44 @@ function getListWithSoldNumbers(listItems) {
 
 
 function findUlItem() {
+  var correctList = -1;
   var resultDiv = document.getElementById('Results');
   var descendants = getElementDescendants(resultDiv);
   for (var j = 0; j < descendants.length; j++) {
-    if(descendants[j].tagName == "UL"){
-      list = descendants[j];
-      if(ulElemIsGood(list))
+    if (descendants[j].tagName == "UL") {
+      let list = descendants[j];
+      if (ulElemIsGood(list)){
+        correctList = list;
         break;
+      }
     }
   }
-  return list;
+  return correctList;
 }
 
-function countInstances(string, word) {
-   var nrInstances = string.split(word).length - 1;
-   return nrInstances;
-}
 
-function ulElemIsGood(list){
+
+function ulElemIsGood(list) {
   //check if 'list' is the correct UL item beacuse there can be more
   //first check the number of its descendant li items ->> minimum of 20
-  if(countInstances(list.innerHTML,"<li") < 20)
+  var nrLi = 0; //number of li descendants
+  var nrImg = 0;
+  var nrLink = 0;
+  var descendants = getElementDescendants(list);
+  for (var j = 0; j < descendants.length; j++) {
+    if (descendants[j].tagName == "LI")
+      nrLi++;
+    else if (descendants[j].tagName == "IMG")
+      nrImg++;
+    else if (descendants[j].tagName == "A")
+      nrLink++;
+  }
+  if (nrLi < 20 || nrImg < 20 || nrLink < 20)
+    return false;
+  if (ulItemContainsSoldItems(list) === false)
     return false;
 
-  return true;  
-
-
+  return true;
 }
 
 function searchChildrenListItems(ulItem) {
