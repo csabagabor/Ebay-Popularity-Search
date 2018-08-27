@@ -76,12 +76,28 @@ function findUlItem() {
   for (var j = 0; j < descendants.length; j++) {
     if(descendants[j].tagName == "UL"){
       list = descendants[j];
-      break;
+      if(ulElemIsGood(list))
+        break;
     }
   }
   return list;
 }
 
+function countInstances(string, word) {
+   var nrInstances = string.split(word).length - 1;
+   return nrInstances;
+}
+
+function ulElemIsGood(list){
+  //check if 'list' is the correct UL item beacuse there can be more
+  //first check the number of its descendant li items ->> minimum of 20
+  if(countInstances(list.innerHTML,"<li") < 20)
+    return false;
+
+  return true;  
+
+
+}
 
 function searchChildrenListItems(ulItem) {
   var listItems = [];
