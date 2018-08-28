@@ -1,13 +1,29 @@
 {
-  "manifest_version": 2,
+	"manifest_version": 2,
 
-  "name": "Ebay sort by sold number",
-  "version": "0.1.0",
-  "description": "Ebay sort by sold number",
-
-  "content_scripts": [{
-    "js": ["content.js"],
-    "matches": ["https://www.ebay.com/*","https://www.ebay.co.uk/*","https://www.ebay.de/*"]
-  }]
+	"name": "eBay™ Sort by Popularity",
+	"version": "0.1.0",
+	"description": "Extension that sorts the eBay™ search results by their popularity (number of times sold)",
+	
+	"icons": {
+		"16": "res/img/icon16.png",
+		"48": "res/img/icon48.png",
+		"128": "res/img/icon128.png"
+	},
+	
+	"browser_action": {
+        "default_icon": "res/img/icon48.png",
+        "default_popup": "res/html/browser-action.html",
+        "default_title": "eBay™ Sort by Popularity"
+    },
+	
+	"content_scripts": [{
+	"js": ["res/script/content.js"],
+	"matches": ["https://www.ebay.com/*","https://www.ebay.co.uk/*","https://www.ebay.de/*"]
+	}],
+	
+	 "permissions": [
+        "storage"
+    ]
 
 }
