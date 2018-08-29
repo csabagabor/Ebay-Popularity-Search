@@ -19,7 +19,7 @@
 	
 	"content_scripts": [{
 	"js": ["res/script/content.js"],
-	"matches": ["https://www.ebay.com/*","https://www.ebay.co.uk/*","https://www.ebay.de/*"]
+	"matches": ["<all_urls>"]
 	}],
 	
 	 "permissions": [
