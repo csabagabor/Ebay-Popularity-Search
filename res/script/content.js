@@ -1,13 +1,16 @@
 
-if (window.location.host.startsWith('www.ebay') && window.location.pathname.startsWith('/sch/')) {
-
+if ((window.location.host.startsWith('www.ebay') || window.location.host.startsWith('www.benl.ebay'))  && window.location.pathname.startsWith('/sch/')) {
+document.body.onload = function() {
+	
+	var enableSorting = true;
+	chrome.storage.sync.get("enablePopularitySortEbay", function(items) {	
+		enableSorting = items.enablePopularitySortEbay;
+	});
+	
 	setTimeout(function() {
-	  replaceListItems();
-	}, 100);
-
-	var searchValue = "Sold";
-
-
+	if(enableSorting)
+		replaceListItems();
+	}, 10);
 
 
 	function replaceListItems() {
@@ -15,17 +18,19 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 	  if (list != -1) {
 		var listItems = searchChildrenListItems(list);
 		var hiddenLi = createDummyListItem(list, listItems);
-		var listSortedItems = getListWithSoldNumbers(listItems);
+		var sortedLists = getListWithSoldNumbers(listItems);
+		var listSortedItems = sortedLists[0];
+		var listSortedItemsOnSale = sortedLists[1];
+		var listSortedItemsWatching = sortedLists[2];
 		sortListItems(listSortedItems);
+		sortListItems(listSortedItemsOnSale);
+		sortListItems(listSortedItemsWatching);
 		insertSoldItemsInFront(list, listSortedItems, hiddenLi);
+		insertSoldItemsInFront(list, listSortedItemsWatching, hiddenLi);
+		insertSoldItemsInFront(list, listSortedItemsOnSale, hiddenLi);				
 	  }
 	}
 
-	function ulItemContainsSoldItems(list) {
-	  if (list.innerHTML.indexOf(searchValue) > -1)
-		return true;
-	  return false;
-	}
 
 	function insertSoldItemsInFront(list, listSortedItems, hiddenLi) {
 	  for (var j = 0; j < listSortedItems.length; j++) {
@@ -42,13 +47,9 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 	  })
 	}
 
-
-	function getSoldNumberFromText(node) {
-	  var text = node.nodeValue.trim();
-	  var soldNr;
-	  if (text.indexOf("+") > -1) { //eg "37+ Sold"
-		soldNr = text.substring(0, text.indexOf(searchValue) - 2);
-	  } else soldNr = text.substring(0, text.indexOf(searchValue) - 1);
+	function getSoldNumberFromText(string) {
+	  var text = string.trim();
+	  var soldNr = text.match(/\d+/);
 	  return soldNr;
 	}
 
@@ -60,28 +61,43 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 	  }
 	  listSortedItems.push(listItemWithSoldNumber);
 	}
-
+	
 
 	function getListWithSoldNumbers(listItems) {
 	  var listSortedItems = [];
+	  var listSortedItemsOnSale = [];
+	  var listSortedItemsWatching = [];
 	  for (var i = 0; i < listItems.length; i++) {
 		var currItem = listItems[i];
-		var descendants = getDescendants(currItem);
+		var descendants = getElementDescendants(currItem);
 		for (var j = 0; j < descendants.length; j++) {
-		  if (descendants[j].className == "hotness-signal red") {
-			var soldNr = getSoldNumberFromText(descendants[j]);
-			addItemToSortedItems(listSortedItems, currItem, soldNr);
+		  if ((descendants[j].className == "hotness-signal red") || (descendants[j].classList.contains("s-item__hotness"))) {
+			var text = descendants[j].innerText;
+			//do not count product on sale
+			var soldNr = getSoldNumberFromText(text);
+			if(text.indexOf("%") > -1){
+				addItemToSortedItems(listSortedItemsOnSale, currItem, soldNr);
+				break;	
+			}		
+			else if(text.indexOf("Watching") > -1){	
+				addItemToSortedItems(listSortedItemsWatching, currItem, soldNr);
+				break;
+			}
+			else{//SOLD				
+				addItemToSortedItems(listSortedItems, currItem, soldNr);
+				break;
+			}
 		  }
 		}
 	  }
-	  return listSortedItems;
+	  return [listSortedItems,listSortedItemsOnSale,listSortedItemsWatching];
 	}
 
 
 	function findUlItem() {
 	  var correctList = -1;
-	  var resultDiv = document.getElementById('Results');
-	  var descendants = getElementDescendants(resultDiv);
+	  
+	  var descendants = document.getElementsByTagName("UL");
 	  for (var j = 0; j < descendants.length; j++) {
 		if (descendants[j].tagName == "UL") {
 		  let list = descendants[j];
@@ -112,8 +128,6 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 		  nrLink++;
 	  }
 	  if (nrLi < 20 || nrImg < 20 || nrLink < 20)
-		return false;
-	  if (ulItemContainsSoldItems(list) === false)
 		return false;
 
 	  return true;
@@ -158,4 +172,5 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 	  }
 	  return accum;
 	}
+}
 }
