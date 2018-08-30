@@ -6,8 +6,7 @@ document.body.onload = function() {
 	var checkbox = document.getElementById("enableSort");
 	
 	//load stored data that holds the value of the state of the checkbox
-	chrome.storage.sync.get("enablePopularitySortEbay", function(items) {	
-		console.log(items);
+	chrome.storage.sync.get({enablePopularitySortEbay : true}, function(items) {	
 		checkbox.checked = items.enablePopularitySortEbay;			
 	});
 	  
