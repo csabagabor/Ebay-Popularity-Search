@@ -3,7 +3,7 @@ if ((window.location.host.startsWith('www.ebay') || window.location.host.startsW
 document.body.onload = function() {
 	
 	var enableSorting = true;
-	chrome.storage.sync.get("enablePopularitySortEbay", function(items) {	
+	chrome.storage.sync.get({enablePopularitySortEbay : true}, function(items) {	
 		enableSorting = items.enablePopularitySortEbay;
 	});
 	
