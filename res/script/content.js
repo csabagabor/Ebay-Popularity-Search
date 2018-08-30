@@ -49,7 +49,7 @@ document.body.onload = function() {
 
 	function getSoldNumberFromText(string) {
 	  var text = string.trim();
-	  var soldNr = text.match(/\d+/);
+	  var soldNr = text.match(/\d/g).join("");
 	  return soldNr;
 	}
 
