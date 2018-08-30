@@ -43,12 +43,9 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 	}
 
 
-	function getSoldNumberFromText(node) {
-	  var text = node.nodeValue.trim();
-	  var soldNr;
-	  if (text.indexOf("+") > -1) { //eg "37+ Sold"
-		soldNr = text.substring(0, text.indexOf(searchValue) - 2);
-	  } else soldNr = text.substring(0, text.indexOf(searchValue) - 1);
+	function getSoldNumberFromText(string) {
+	  var text = string.trim();
+	  var soldNr = text.match(/\d+/);
 	  return soldNr;
 	}
 
@@ -66,11 +63,16 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 	  var listSortedItems = [];
 	  for (var i = 0; i < listItems.length; i++) {
 		var currItem = listItems[i];
-		var descendants = getDescendants(currItem);
+		var descendants = getElementDescendants(currItem);
 		for (var j = 0; j < descendants.length; j++) {
-		  if (descendants[j].className == "hotness-signal red") {
-			var soldNr = getSoldNumberFromText(descendants[j]);
-			addItemToSortedItems(listSortedItems, currItem, soldNr);
+		  if ((descendants[j].className == "hotness-signal red") || (descendants[j].classList.contains("s-item__hotness"))) {
+			var text = descendants[j].innerText;
+			//do not count product on sale
+			if(text.indexOf("%") <= 0){
+				var soldNr = getSoldNumberFromText(text);
+				addItemToSortedItems(listSortedItems, currItem, soldNr);
+				break;
+			}
 		  }
 		}
 	  }
@@ -80,8 +82,8 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 
 	function findUlItem() {
 	  var correctList = -1;
-	  var resultDiv = document.getElementById('Results');
-	  var descendants = getElementDescendants(resultDiv);
+	  
+	  var descendants = document.getElementsByTagName("UL");
 	  for (var j = 0; j < descendants.length; j++) {
 		if (descendants[j].tagName == "UL") {
 		  let list = descendants[j];
