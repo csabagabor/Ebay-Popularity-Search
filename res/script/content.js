@@ -1,9 +1,16 @@
 
-if (window.location.host.startsWith('www.ebay') && window.location.pathname.startsWith('/sch/')) {
-
+if ((window.location.host.startsWith('www.ebay') || window.location.host.startsWith('www.benl.ebay'))  && window.location.pathname.startsWith('/sch/')) {
+document.body.onload = function() {
+	
+	var enableSorting = true;
+	chrome.storage.sync.get("enablePopularitySortEbay", function(items) {	
+		enableSorting = items.enablePopularitySortEbay;
+	});
+	
 	setTimeout(function() {
-	  replaceListItems();
-	}, 100);
+	if(enableSorting)
+		replaceListItems();
+	}, 10);
 
 
 	function replaceListItems() {
@@ -165,4 +172,5 @@ if (window.location.host.startsWith('www.ebay') && window.location.pathname.star
 	  }
 	  return accum;
 	}
+}
 }
