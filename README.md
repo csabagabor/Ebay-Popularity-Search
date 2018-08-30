@@ -1,6 +1,6 @@
 # eBay™ Sort By Popularity
 A Chrome Extension that sorts the eBay™ search results by their popularity (number of times sold + auction/sale percentage + number of watchers on a listing).  
-> Note: This extension is developed independently and it is not officially endorsed by eBay™.
+> Note: This extension is developed independently and is not officially endorsed by eBay™.
 
 ## How to use it?
 - install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/ebay-sort-by-popularity/hoiandnpgmngpknmfdnbkhigbbbgmpfm)
