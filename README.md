@@ -3,7 +3,7 @@ A Chrome Extension that sorts the eBay™ search results by their popularity (nu
 > Note: This extension is developed independently and is not officially endorsed by eBay™.
 
 ## How to use it?
-- install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/ebay-sort-by-popularity/hoiandnpgmngpknmfdnbkhigbbbgmpfm)
+- install the extension from the [Chrome Web Store](https://chrome.google.com/webstore/detail/ebay-popularity-search/hoiandnpgmngpknmfdnbkhigbbbgmpfm)
 - search for anything on any  eBay™ site and the most sold items will appear on the top sorted by their sold number in ascending order, after these items those items come which have the most watchers and finally those items come which are on auction (normal items are put to the end of the list)
 - for the extension to work optimally you should set the `Items per page` to `96` or even `192`
 - **Example:** Using it to list the most popular searches for the keyword `smartphone`:
