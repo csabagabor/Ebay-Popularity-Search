@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 
-	"name": "eBay™ Sort by Popularity",
-	"version": "0.1.0",
+	"name": "eBay™ Popularity Search",
+	"version": "0.1.2",
 	"description": "Extension that sorts the eBay™ search results by their popularity (number of times sold)",
 	
 	"icons": {
@@ -14,7 +14,7 @@
 	"browser_action": {
         "default_icon": "res/img/icon48.png",
         "default_popup": "res/html/browser-action.html",
-        "default_title": "eBay™ Sort by Popularity"
+        "default_title": "eBay™ Popularity Search"
     },
 	
 	"content_scripts": [{
